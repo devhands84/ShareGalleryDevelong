@@ -10,31 +10,43 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SignButton from '../components/SignButton';
-import SignForm from '../components/SignForm';
+import SignInForm from '../components/SignForm';
 import {signIn, signUp} from '../lib/auth';
+import {getUser} from '../lib/users';
+import {useUserContext} from '../contexts/UserContext';
 
 function SignInScreen({navigation, route}) {
-  const {isSignUp} = route.params ?? {};
+  const {isSignUp} = route.params || {};
   const [form, setForm] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
   const [loading, setLoading] = useState();
+  const {setUser} = useUserContext();
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
   };
 
   const onSubmit = async () => {
     Keyboard.dismiss();
-    const {email, password} = form;
-    const info = {email, password};
+    const {email, password, confirmPassword} = form;
+    if (isSignUp && password !== confirmPassword) {
+      Alert.alert('Failed', 'Please right password');
+      return;
+    }
     setLoading(true);
+    const info = {email, password};
     try {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
-      console.log(user);
+      const profile = await getUser(user.uid);
+      if (!profile) {
+        navigation.navigate('Welcome', {uid: user.uid});
+      } else {
+        setUser(profile);
+      }
     } catch (e) {
-      Alert.alert('Fail');
+      Alert.alert('Fail', e.code);
     } finally {
       setLoading(false);
     }
@@ -47,9 +59,9 @@ function SignInScreen({navigation, route}) {
       <SafeAreaView style={styles.fullScreen}>
         <Text style={styles.text}>SahreGallery</Text>
         <View style={styles.form}>
-          <SignForm
+          <SignInForm
             isSignUp={isSignUp}
-            onsubmit={onSubmit}
+            onSubmit={onSubmit}
             form={form}
             createChangeTextHandler={createChangeTextHandler}
           />
