@@ -21,10 +21,10 @@ function SignForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
       />
       <BorderedInput
         placeholder="Password"
+        secureTextEntry
         hasMarginBottom={isSignUp}
         value={form.password}
         onChangeText={createChangeTextHandler('password')}
-        secureTextEntry
         ref={passwordRef}
         returnKeyType={isSignUp ? 'next' : 'done'}
         onSubmitEditing={() => {
@@ -38,9 +38,9 @@ function SignForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
       {isSignUp && (
         <BorderedInput
           placeholder="Passwork check"
+          secureTextEntry
           value={form.confirmPassword}
           onChangeText={createChangeTextHandler('confirmPassword')}
-          secureTextEntry
           ref={confirmPasswordRef}
           returnKeyType="done"
           onSubmitEditing={onSubmit}

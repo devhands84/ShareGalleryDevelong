@@ -2,11 +2,12 @@ import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import CustomButton from './CustomButton';
 import {useNavigation} from '@react-navigation/native';
-function SignButton({isSignUp, onSubmit, loading}) {
+
+function SignButtons({isSignUp, onSubmit, loading}) {
   const navigation = useNavigation();
 
-  const primaryTitle = isSignUp ? 'Sign Up' : 'Sign In';
-  const secondaryTitle = isSignUp ? 'Sign In' : 'Sign Up';
+  const primaryTitle = isSignUp ? '회원가입' : '로그인';
+  const secondaryTitle = isSignUp ? '로그인' : '회원가입';
 
   const onSecondaryButtonPress = () => {
     if (isSignUp) {
@@ -35,7 +36,7 @@ function SignButton({isSignUp, onSubmit, loading}) {
   );
 }
 
-export default SignButton;
+export default SignButtons;
 
 const styles = StyleSheet.create({
   spinnerWrapper: {

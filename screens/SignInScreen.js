@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import SignButton from '../components/SignButton';
+import SignButtons from '../components/SignButtons';
 import SignInForm from '../components/SignForm';
 import {signIn, signUp} from '../lib/auth';
 import {getUser} from '../lib/users';
@@ -35,8 +35,9 @@ function SignInScreen({navigation, route}) {
       Alert.alert('Failed', 'Please right password');
       return;
     }
-    setLoading(true);
     const info = {email, password};
+    setLoading(true);
+
     try {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
       const profile = await getUser(user.uid);
@@ -65,7 +66,7 @@ function SignInScreen({navigation, route}) {
             form={form}
             createChangeTextHandler={createChangeTextHandler}
           />
-          <SignButton
+          <SignButtons
             isSignUp={isSignUp}
             onSubmit={onSubmit}
             loading={loading}

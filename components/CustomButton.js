@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6200ee',
   },
   margin: {
-    marginBottom: 8,
+    marginBottom: 56,
   },
   text: {
     fontWeight: 'bold',
@@ -60,5 +60,9 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: '#6200ee',
+  },
+  block: {
+    flex: 1,
+    paddingHorizontal: 16,
   },
 });
