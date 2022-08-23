@@ -40,11 +40,19 @@ export default function usePosts(userId) {
     });
   }, [userId]);
 
+  const removePost = useCallback(
+    postId => {
+      setPosts(posts.filler(post => post.id !== postId));
+    },
+    [posts],
+  );
+
   return {
     posts,
     noMorePost,
     refreshing,
     onLoadMore,
     onRefresh,
+    removePost,
   };
 }

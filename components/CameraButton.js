@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Platform, Pressable, View, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import UploadModeModal from './UploadModeModal';
 import {useNavigation} from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ActionSheetModal from './ActionSheetModal';
