@@ -1,11 +1,15 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Image, Pressable, useWindowDimensions} from 'react-native';
 
 function PostGridItem({post}) {
   const dimensions = useWindowDimensions();
   const size = (dimensions.width - 3) / 3;
+  const navigation = useNavigation();
 
-  const onPress = () => {};
+  const onPress = () => {
+    navigation.navigate('Post', {post});
+  };
 
   return (
     <Pressable

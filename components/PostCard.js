@@ -1,7 +1,9 @@
 import React, {useMemo} from 'react';
 import {Pressable, View, Text, StyleSheet, Image} from 'react-native';
 import Avatar from './Avatar';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useUserContext} from '../contexts/UserContext';
 
 function PostCard({user, photoURL, description, createdAt}) {
   const date = useMemo(
@@ -10,12 +12,21 @@ function PostCard({user, photoURL, description, createdAt}) {
   );
 
   const navigation = useNavigation();
+  const routeNames = useNavigationState(state => state.routeNames);
+  const {user: me} = useUserContext();
+  const isMyPost = me.id === user.id;
+
   const onOpenProfile = () => {
-    navigation.navigate('Profile', {
-      userId: user.id,
-      displayName: user.displayName,
-    });
+    if (routeNames.find(routeName => routeName === 'MyProfile')) {
+      navigation.navigate('MyProfile');
+    } else {
+      navigation.navigate('Profile', {
+        userId: user.id,
+        displayName: user.displayName,
+      });
+    }
   };
+
   return (
     <View style={styles.block}>
       <View style={[styles.head, styles.paddingBlock]}>
@@ -23,6 +34,11 @@ function PostCard({user, photoURL, description, createdAt}) {
           <Avatar source={user.photoURL && {uri: user.photoURL}} />
           <Text style={styles.displayName}>{user.displayName}</Text>
         </Pressable>
+        {isMyPost && (
+          <Pressable hitSlop={8}>
+            <Icon name="more-vert" size={20} />
+          </Pressable>
+        )}
       </View>
       <Image
         source={{uri: photoURL}}
@@ -46,6 +62,7 @@ const styles = StyleSheet.create({
   block: {
     paddingTop: 16,
     paddingBottom: 16,
+    flex: 1,
   },
   avatar: {
     width: 32,

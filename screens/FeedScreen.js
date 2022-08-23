@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -6,43 +6,11 @@ import {
   RefreshControl,
 } from 'react-native';
 import PostCard from '../components/PostCard';
-import {getOlderPosts, getPosts, getNewerPosts, PAGE_SIZE} from '../lib/posts';
+import usePosts from '../hooks/usePosts';
 
 function FeedScreen() {
-  const [posts, setPosts] = useState(null);
-  const [noMorePost, setNoMorePost] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts();
 
-  useEffect(() => {
-    getPosts().then(setPosts);
-  }, []);
-
-  const onLoadMore = async () => {
-    if (noMorePost || !posts || posts.length < PAGE_SIZE) {
-      return;
-    }
-    const lastPost = posts[posts.length - 1];
-    const olderPosts = await getOlderPosts(lastPost.id);
-    if (olderPosts.length < PAGE_SIZE) {
-      setNoMorePost(true);
-    }
-    setPosts(posts.concat(olderPosts));
-  };
-
-  const onRefresh = async () => {
-    if (!posts || posts.length === 0 || refreshing) {
-      return;
-    }
-
-    const firstPost = posts[0];
-    setRefreshing(true);
-    const newerPosts = await getNewerPosts(firstPost.id);
-    setRefreshing(false);
-    if (newerPosts.length === 0) {
-      return;
-    }
-    setPosts(newerPosts.concat(posts));
-  };
   return (
     <FlatList
       data={posts}
